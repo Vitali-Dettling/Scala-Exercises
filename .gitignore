@@ -3,6 +3,7 @@
 
 # Customised
 .idea*
+/Delete/*
 
 # sbt specific
 .cache
