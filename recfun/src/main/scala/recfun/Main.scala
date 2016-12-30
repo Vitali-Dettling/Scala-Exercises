@@ -18,36 +18,27 @@ object Main {
   if (c == 0 || c == r) 1 else pascal(c, r - 1) + pascal(c - 1, r - 1)
 
 
-  var countParentheses = List[String]()
-  final var equalNumberOfParentheses = 0
-
   /**
     * Exercise 2
     */
   //def balance(chars: List[Char]): Boolean = ???
   def balance(chars: List[Char]): Boolean = {
 
-    if (!chars.isEmpty) {
+    def countBalance(chars: List[Char], init: Int): Int = {
 
-      if (chars.head == '(') countParentheses.mkString(")")
-      if (chars.head == ')') countParentheses.mkString("(")
-
-      balance(chars.tail)
+      var parentheses = init
+      if (!chars.isEmpty) {
+        if (chars.head == ')' && parentheses == 0) return 1
+        else if (chars.head == '(') parentheses += 1
+        else if (chars.head == ')') parentheses -= 1
+        countBalance(chars.tail, parentheses)
+      }else {
+        parentheses
+      }
     }
-
-      if((countParentheses.length%2) == 0) true else false
-
-    /* var exit = false
-    var count = 0
-    while(!exit){
-      if(countParentheses(count) != "(" && countParentheses(count+1) == ")") count += 2 else exit = true
-    }*/
+      countBalance(chars, 0) == 0
   }
 
-
-  var change = 0
-  var count = 0
-  var iteration = 0
 
   /**
     * Exercise 3
@@ -60,8 +51,9 @@ object Main {
       1
     }
     else if (money > 0 && !coins.isEmpty) {
-      val mv1 = money - coins.head
-      println("countChange(" + mv1.toString() + "," + coins + ")" + " + " + "countChange(" + money.toString() + "," + coins.tail + ")")
+      //For testing purpose
+      //val mv1 = money - coins.head
+      //println("countChange(" + mv1.toString() + "," + coins + ")" + " + " + "countChange(" + money.toString() + "," + coins.tail + ")")
       countChange(money - coins.head, coins) + countChange(money, coins.tail)
     } else {
       0
