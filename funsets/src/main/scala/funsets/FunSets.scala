@@ -8,7 +8,7 @@ object FunSets {
    * We represent a set by its characteristic function, i.e.
    * its `contains` predicate.
    */
-  type Set = Int => Boolean
+  type Set = (Int) => Boolean
 
 
   /**
