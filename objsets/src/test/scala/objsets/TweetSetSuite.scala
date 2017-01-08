@@ -45,6 +45,15 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+
+  test("filter: 20 on set6_2") {
+    new TestSets {
+      var t = set6_2.filter(tw => tw.retweets == 9)
+      var t2 = size(t)
+      assert(t2 === 1)
+    }
+  }
+
   test("filter: 20 on set5") {
     new TestSets {
       var t = set5.filter(tw => tw.retweets == 20)
@@ -52,6 +61,7 @@ class TweetSetSuite extends FunSuite {
       assert(t2 === 2)
     }
   }
+
 
   test("union: set4c and set4d") {
     new TestSets {

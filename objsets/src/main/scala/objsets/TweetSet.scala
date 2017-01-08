@@ -153,10 +153,19 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def filter(p: Tweet => Boolean): TweetSet = if(contains(elem)) filterAcc(p, new Empty) else null
 
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = {
-    if(p(elem)) right.filterAcc(p, acc incl elem)
-    else acc
+    var result: TweetSet = acc
+    foreach((tweet) => result =
+      if (p(tweet)){
+        println(tweet.toString)
+        result.incl(tweet)
+      }else {
+        println(tweet.toString)
+        result
+      }
+    )
+    result
   }
-
+  //Delete ???
     //    if(p(elem)){
 //        right.filterAcc(p, acc incl elem)
 //        left.filterAcc(p, acc incl elem)
@@ -164,17 +173,10 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 //        right.filterAcc(p, acc)
 //        left.filterAcc(p, acc)
 //      }
-//    }
-//
-
-  //    foreach((tweet) =>
-//      if (p(tweet)){
-//        acc.incl(tweet)
-//      }
-//    )
-//    acc
 //  }
-
+//    if(p(elem)) right.filterAcc(p, acc incl elem)
+//    else acc
+//  }
 
   def union(that: TweetSet): TweetSet = ((left union right) union that) incl elem
 
@@ -232,19 +234,35 @@ object GoogleVsApple {
   val apple = List("ios", "iOS", "iphone", "iPhone", "ipad", "iPad")
 
   lazy val googleTweets: TweetSet = TweetReader.allTweets
-
-  var test = googleTweets.filter((tweet) => tweet.text.contains(google.head))
-
-
-
-
   lazy val appleTweets: TweetSet = TweetReader.allTweets
-  
+
+  val googleVSapple = List(google, apple)
+
+  var iters = iter(googleVSapple, new Empty)
+
+  def iter(toBeIter: List[List[String]], acc: TweetSet): TweetSet = {
+    var result = acc
+
+    def innerIter(innerToBeIter: List[String], acc: TweetSet): TweetSet = {
+
+      if (!toBeIter.isEmpty) {
+        val filtered: TweetSet = googleTweets.filter((tweet) => tweet.text.contains(innerToBeIter.head))
+        if (filtered.isInstanceOf[NonEmpty]) {
+          result = acc.union(filtered)
+        }
+      }
+      if(!innerToBeIter.tail.isEmpty) innerIter(innerToBeIter.tail, result) else result
+    }
+
+    if(!toBeIter.head.isEmpty) result = innerIter(toBeIter.head, result)
+    if(!toBeIter.tail.isEmpty) iter(toBeIter.tail, result) else result
+  }
+
   /**
    * A list of all tweets mentioning a keyword from either apple or google,
    * sorted by the number of retweets.
    */
-  lazy val trending: TweetList = test.descendingByRetweet
+  lazy val trending: TweetList = iters.descendingByRetweet
   }
 
 object Main extends App {
