@@ -40,7 +40,7 @@ class TweetSetSuite extends FunSuite {
   test("filter: a on set5") {
     new TestSets {
       var t = set5.filter(tw => tw.user == "a")
-      var t2 = size(set5.filter(tw => tw.user == "a"))
+      var t2 = size(t)
       assert(t2 === 1)
     }
   }

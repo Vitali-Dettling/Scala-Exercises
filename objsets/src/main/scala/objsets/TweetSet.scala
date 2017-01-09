@@ -153,30 +153,30 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def filter(p: Tweet => Boolean): TweetSet = if(contains(elem)) filterAcc(p, new Empty) else null
 
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = {
-    var result: TweetSet = acc
-    foreach((tweet) => result =
-      if (p(tweet)){
-        println(tweet.toString)
-        result.incl(tweet)
+    var result = acc
+    if(p(elem)){
+      result = result union right.filterAcc(p, result incl elem)
+      result = result union left.filterAcc(p, result incl elem)
       }else {
-        println(tweet.toString)
-        result
+      result = right.filterAcc(p, result)
+      result = left.filterAcc(p, result)
       }
-    )
     result
   }
-  //Delete ???
-    //    if(p(elem)){
-//        right.filterAcc(p, acc incl elem)
-//        left.filterAcc(p, acc incl elem)
+//Works !!!
+//    var result: TweetSet = acc
+//    foreach((tweet) => result =
+//      if (p(tweet)){
+//        println(tweet.toString)
+//        result.incl(tweet)
 //      }else {
-//        right.filterAcc(p, acc)
-//        left.filterAcc(p, acc)
+//        println(tweet.toString)
+//        result
 //      }
+//    )
+//    result
 //  }
-//    if(p(elem)) right.filterAcc(p, acc incl elem)
-//    else acc
-//  }
+
 
   def union(that: TweetSet): TweetSet = ((left union right) union that) incl elem
 
