@@ -153,18 +153,24 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def filter(p: Tweet => Boolean): TweetSet = if(contains(elem)) filterAcc(p, new Empty) else null
 
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = {
-    var result: TweetSet = acc
-    foreach((tweet) => result =
-      if (p(tweet)){
-        println(tweet.toString)
-        result.incl(tweet)
-      }else {
-        println(tweet.toString)
-        result
-      }
-    )
-    result
+    val updatedAcc = if(p(elem)) acc.incl(elem) else acc // visit current node
+    left.filterAcc(p, right.filterAcc(p, updatedAcc))    // continue tree traversal
   }
+
+//Works as well!
+//    var result: TweetSet = acc
+//    foreach((tweet) => result
+//      =  if (p(tweet)){
+//       // println(tweet.toString)
+//        result.incl(tweet)
+//      }else {
+//       // println(tweet.toString)
+//        result
+//      }
+//    )
+//    result
+//  }
+
 
 // Regression
 //    var result = acc
