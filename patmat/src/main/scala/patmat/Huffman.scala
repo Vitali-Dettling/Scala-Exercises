@@ -2,6 +2,8 @@ package patmat
 
 import common._
 
+import scala.collection.immutable.Stream.Empty
+
 /**
  * Assignment 4: Huffman coding
  *
@@ -24,9 +26,15 @@ object Huffman {
   
 
   // Part 1: Basics
-    def weight(tree: CodeTree): Int = ??? // tree match ...
+    def weight(tree: CodeTree): Int = tree match{
+      case n: Leaf => n.weight
+      case f: Fork => weight(f.left) + weight(f.right)
+    }
   
-    def chars(tree: CodeTree): List[Char] = ??? // tree match ...
+    def chars(tree: CodeTree): List[Char] = tree match{
+      case c: Leaf => List(c.char)
+      case f: Fork => chars(f.left) ::: chars(f.right)
+    }
   
   def makeCodeTree(left: CodeTree, right: CodeTree) =
     Fork(left, right, chars(left) ::: chars(right), weight(left) + weight(right))
