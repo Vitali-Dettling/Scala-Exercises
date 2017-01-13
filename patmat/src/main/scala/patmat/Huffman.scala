@@ -2,6 +2,8 @@ package patmat
 
 import common._
 
+import scala.collection.immutable.Stream.Empty
+
 /**
  * Assignment 4: Huffman coding
  *
@@ -36,7 +38,6 @@ object Huffman {
   
   def makeCodeTree(left: CodeTree, right: CodeTree) =
     Fork(left, right, chars(left) ::: chars(right), weight(left) + weight(right))
-
 
 
   // Part 2: Generating Huffman trees
@@ -165,9 +166,6 @@ object Huffman {
       val tree = makeOrderedLeafList(times(chars))
       val treeList = until(singleton(tree), tree)(tree)
 
-      //Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5)
-      //List(Fork(Leaf(a,2),Leaf(b,3),List(a, b),5))
-
       if(treeList.length == 1) treeList(0)
       else if (treeList.length > 1) throw new Error("Tree list has more then one element!")
       else throw new Error("Tree lists were empty!")
@@ -215,7 +213,14 @@ object Huffman {
    * This function encodes `text` using the code tree `tree`
    * into a sequence of bits.
    */
-    def encode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+    def encode(tree: CodeTree)(text: List[Char]): List[Bit] = text.flatMap(node(tree))
+
+    private def node(tree: CodeTree)(current: Char): List[Bit] = tree match{
+      case c: Leaf  => Nil
+      case f: Fork if (chars(f.left).contains(current)) => 0 :: node(f.left)(current)
+      case f: Fork if (chars(f.right).contains(current)) => 1 :: node(f.right)(current)
+    }
+
   
   // Part 4b: Encoding using code table
 
@@ -227,7 +232,7 @@ object Huffman {
    */
     def codeBits(table: CodeTable)(char: Char): List[Bit] = ???
   
-  /**
+  /**git
    * Given a code tree, create a code table which contains, for every character in the
    * code tree, the sequence of bits representing that character.
    *
@@ -250,5 +255,5 @@ object Huffman {
    * To speed up the encoding process, it first converts the code tree to a code table
    * and then uses it to perform the actual encoding.
    */
-    def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+    def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = encode(tree)(text)
   }
