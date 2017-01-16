@@ -1,5 +1,7 @@
 package forcomp
 
+import scala.collection.generic.SeqFactory
+
 
 object Anagrams {
 
@@ -63,7 +65,8 @@ object Anagrams {
 
 
   /** Returns all the anagrams of a given word.
-    * LINK: https://twitter.github.io/scala_school/collections.html*/
+    * LINK: https://twitter.github.io/scala_school/collections.html
+    * */
   def wordAnagrams(word: Word): List[Word] = dictionaryByOccurrences.filter((m: (Occurrences, List[Word])) => m._1 == wordOccurrences(word)).map(_._2).iterator.next()
 
   /** Returns the list of all subsets of the occurrence list.
@@ -87,8 +90,18 @@ object Anagrams {
    *
    *  Note that the order of the occurrence list subsets does not matter -- the subsets
    *  in the example above could have been displayed in some other order.
+   *
+   *  LINKS: http://alvinalexander.com/scala/scala-for-comprehension-syntax-for-yield-loop-examples
    */
-  def combinations(occurrences: Occurrences): List[Occurrences] = ???
+  def combinations(occurrences: Occurrences): List[Occurrences] = {
+
+    def combinationsAcc(acc: Occurrences): List[Occurrences] = acc match{
+      case h :: t => if(h._2 > 1) List(acc) ::: combinationsAcc(List((h._1, (h._2 - 1)))) else List(acc)
+    }
+    val ofl = occurrences.foldLeft(List[List[(Char, Int)]]())((r,c) => r ::: combinationsAcc(List(c)))
+    val t = for(a <- ofl; b <- ofl.tail.tail; if(a.head._1 != b.head._1))yield List(a.head,b.head)
+    List() +: (ofl ::: t)
+  }
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *

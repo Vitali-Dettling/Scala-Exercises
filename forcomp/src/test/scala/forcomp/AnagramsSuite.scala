@@ -10,6 +10,8 @@ import Anagrams._
 @RunWith(classOf[JUnitRunner])
 class AnagramsSuite extends FunSuite  {
 
+
+
   test("wordOccurrences: abcd") {
     assert(wordOccurrences("abcd") === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
   }
@@ -38,7 +40,6 @@ class AnagramsSuite extends FunSuite  {
   }
 
 
-
   test("subtract: lard - r") {
     val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
     val r = List(('r', 1))
@@ -64,7 +65,8 @@ class AnagramsSuite extends FunSuite  {
       List(('a', 1), ('b', 2)),
       List(('a', 2), ('b', 2))
     )
-    assert(combinations(abba).toSet === abbacomb.toSet)
+    val t = combinations(abba)
+    assert(t.toSet === abbacomb.toSet)
   }
 
 
