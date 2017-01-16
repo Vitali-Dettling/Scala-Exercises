@@ -1,7 +1,5 @@
 package forcomp
 
-import scala.collection.generic.SeqFactory
-
 
 object Anagrams {
 
@@ -67,7 +65,11 @@ object Anagrams {
   /** Returns all the anagrams of a given word.
     * LINK: https://twitter.github.io/scala_school/collections.html
     * */
-  def wordAnagrams(word: Word): List[Word] = dictionaryByOccurrences.filter((m: (Occurrences, List[Word])) => m._1 == wordOccurrences(word)).map(_._2).iterator.next()
+  def wordAnagrams(word: Word): List[Word] = {
+    val f = dictionaryByOccurrences.filter((m: (Occurrences, List[Word])) => m._1 == wordOccurrences(word))
+    val m = f.map(_._2)
+    if(m.iterator.hasNext) m.iterator.next() else List()
+  }
 
   /** Returns the list of all subsets of the occurrence list.
    *  This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
@@ -92,6 +94,8 @@ object Anagrams {
    *  in the example above could have been displayed in some other order.
    *
    *  LINKS: http://alvinalexander.com/scala/scala-for-comprehension-syntax-for-yield-loop-examples
+    *
+    *  TODO: Has to be extended for then 2 sets!
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
 
@@ -112,8 +116,13 @@ object Anagrams {
    *
    *  Note: the resulting value is an occurrence - meaning it is sorted
    *  and has no zero-entries.
+   *
+   *  Example:
+   *   val x = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
+   *   val y = List(('r', 1))
+   *
    */
-  def subtract(x: Occurrences, y: Occurrences): Occurrences = ???
+  def subtract(x: Occurrences, y: Occurrences): Occurrences = x diff y
 
   /** Returns a list of all anagram sentences of the given sentence.
    *
@@ -154,6 +163,23 @@ object Anagrams {
    *  so it has to be returned in this list.
    *
    *  Note: There is only one anagram of an empty sentence.
+    *
+    *  LINK: https://www.tutorialspoint.com/scala/scala_strings.htm
+    *
+    *  TODO: Does not work right.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+
+    if(sentence.isEmpty) return  List(Nil)
+
+    val so: Occurrences = sentenceOccurrences(sentence)
+    val cb: List[Occurrences] = combinations(so)
+
+    def concat(elem: Occurrences, acc: Word): Word = elem match{
+      case Nil => acc
+      case h :: t => concat(t, h._1 + acc)
+    }
+    val tt: List[Word] = for(a <- cb; if(!a.isEmpty))yield concat(a, "").drop(0)
+    for(a <- tt)yield wordAnagrams(a).filterNot(l => l.isEmpty)
+  }
 }

@@ -10,7 +10,72 @@ import Anagrams._
 @RunWith(classOf[JUnitRunner])
 class AnagramsSuite extends FunSuite  {
 
+  test("combinations: abcc") {
+    val abcc = List(('a', 1), ('b', 1), ('c', 2))
+    val abcccomb = List(
+      List(),
+      List(('a', 1)),
+      List(('b', 1)),
+      List(('c', 1)),
+      List(('c', 2)),
+      List(('a', 1), ('c', 1)),
+      List(('a', 1), ('c', 2)),
+      List(('b', 1), ('c', 1)),
+      List(('b', 1), ('c', 2)),
+      List(('a',1), ('b',1), ('c',1)),
+      List(('a',1), ('b',1), ('c',2))
+    )
+    val t = combinations(abcc)
+    assert(t.toSet === abcccomb.toSet)
+  }
 
+  test("sentence anagrams: Linux rulez") {
+    val sentence = List("Linux", "rulez")
+    val anas = List(
+      List("Rex", "Lin", "Zulu"),
+      List("nil", "Zulu", "Rex"),
+      List("Rex", "nil", "Zulu"),
+      List("Zulu", "Rex", "Lin"),
+      List("null", "Uzi", "Rex"),
+      List("Rex", "Zulu", "Lin"),
+      List("Uzi", "null", "Rex"),
+      List("Rex", "null", "Uzi"),
+      List("null", "Rex", "Uzi"),
+      List("Lin", "Rex", "Zulu"),
+      List("nil", "Rex", "Zulu"),
+      List("Rex", "Uzi", "null"),
+      List("Rex", "Zulu", "nil"),
+      List("Zulu", "Rex", "nil"),
+      List("Zulu", "Lin", "Rex"),
+      List("Lin", "Zulu", "Rex"),
+      List("Uzi", "Rex", "null"),
+      List("Zulu", "nil", "Rex"),
+      List("rulez", "Linux"),
+      List("Linux", "rulez")
+    )
+    val r = sentenceAnagrams(sentence).toSet
+    assert(r === anas.toSet)
+  }
+
+  test("sentence anagrams: []") {
+    val sentence = List()
+    assert(sentenceAnagrams(sentence) === List(Nil))
+  }
+
+  test("subtract: lard - r") {
+    val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
+    val r = List(('r', 1))
+    val lad = List(('a', 1), ('d', 1), ('l', 1))
+    assert(subtract(lard, r) === lad)
+  }
+
+  test("subtract: lard - r(2)") {
+    val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 2))
+    val r = List(('r', 1))
+    val lad = List(('a', 1), ('d', 1), ('l', 1))
+    val res = subtract(lard, r)
+    assert(res === lad)
+  }
 
   test("wordOccurrences: abcd") {
     assert(wordOccurrences("abcd") === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
@@ -40,14 +105,6 @@ class AnagramsSuite extends FunSuite  {
   }
 
 
-  test("subtract: lard - r") {
-    val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
-    val r = List(('r', 1))
-    val lad = List(('a', 1), ('d', 1), ('l', 1))
-    assert(subtract(lard, r) === lad)
-  }
-
-
   test("combinations: []") {
     assert(combinations(Nil) === List(Nil))
   }
@@ -68,38 +125,4 @@ class AnagramsSuite extends FunSuite  {
     val t = combinations(abba)
     assert(t.toSet === abbacomb.toSet)
   }
-
-
-  test("sentence anagrams: []") {
-    val sentence = List()
-    assert(sentenceAnagrams(sentence) === List(Nil))
-  }
-
-  test("sentence anagrams: Linux rulez") {
-    val sentence = List("Linux", "rulez")
-    val anas = List(
-      List("Rex", "Lin", "Zulu"),
-      List("nil", "Zulu", "Rex"),
-      List("Rex", "nil", "Zulu"),
-      List("Zulu", "Rex", "Lin"),
-      List("null", "Uzi", "Rex"),
-      List("Rex", "Zulu", "Lin"),
-      List("Uzi", "null", "Rex"),
-      List("Rex", "null", "Uzi"),
-      List("null", "Rex", "Uzi"),
-      List("Lin", "Rex", "Zulu"),
-      List("nil", "Rex", "Zulu"),
-      List("Rex", "Uzi", "null"),
-      List("Rex", "Zulu", "nil"),
-      List("Zulu", "Rex", "nil"),
-      List("Zulu", "Lin", "Rex"),
-      List("Lin", "Zulu", "Rex"),
-      List("Uzi", "Rex", "null"),
-      List("Zulu", "nil", "Rex"),
-      List("rulez", "Linux"),
-      List("Linux", "rulez")
-    )
-    assert(sentenceAnagrams(sentence).toSet === anas.toSet)
-  }
-
 }
