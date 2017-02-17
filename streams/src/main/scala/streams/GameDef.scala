@@ -145,6 +145,7 @@ trait GameDef {
      * Returns the list of positions reachable from the current block
      * which are inside the terrain.
      */
+    //http://stackoverflow.com/questions/29142321/how-to-init-list-of-tuple-and-add-item-in-scala
     def legalNeighbors: List[(Block, Move)] = {
 
       val buf = ListBuffer.empty[(Block, Move)]
@@ -166,6 +167,6 @@ trait GameDef {
     /**
      * Returns `true` if the block is entirely inside the terrain.
      */
-    def isLegal: Boolean = (terrain(b1) || terrain(b2))
+    def isLegal: Boolean = (terrain(b1) && terrain(b2))
   }
 }

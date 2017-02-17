@@ -58,7 +58,9 @@ trait StringParserTerrain extends GameDef {
               pos.row < 0 ||
               pos.col < 0 ||
               pos.col > levelVector(0).length-1) false
-    else (!levelVector.isEmpty && levelVector(pos.row)(pos.col) != '-')
+    else {
+      (!levelVector.isEmpty && levelVector(pos.row)(pos.col) != '-')
+    }
   }
 
   /**

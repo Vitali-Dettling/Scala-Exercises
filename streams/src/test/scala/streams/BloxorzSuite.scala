@@ -1,11 +1,11 @@
 package streams
 
 import org.scalatest.FunSuite
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-
 import Bloxorz._
+
+import scala.collection.convert.WrapAsJava.seqAsJavaList
 
 @RunWith(classOf[JUnitRunner])
 class BloxorzSuite extends FunSuite {
@@ -53,8 +53,34 @@ class BloxorzSuite extends FunSuite {
       |------ooo-""".stripMargin
   }
 
+  test("newNeighborsOnly"){
+    new Level1 {
+      val newNeighbors = newNeighborsOnly(
+        Set(
+          (Block(Pos(1, 2), Pos(1, 3)), List(Right, Left, Up)),
+          (Block(Pos(2, 1), Pos(3, 1)), List(Down, Left, Up))
+        ).toStream,
+
+        Set(Block(Pos(1, 2), Pos(1, 3)), Block(Pos(1, 1), Pos(1, 1)))
+      )
+
+      val result = Set(
+        (Block(Pos(2,1),Pos(3,1)), List(Down,Left,Up))
+      ).toStream
+
+      assert(newNeighbors.toString() == result.toString())
+    }
+  }
 
 
+  test("neighborsWithHistory"){
+    new Level1{
+      val streamResult = neighborsWithHistory(Block(Pos(1,1),Pos(1,1)), List(Left,Up))
+      val setResult = streamResult.toSet
+      assert(setResult.toString() == "Set((Block(Pos(1,2),Pos(1,3)),List(Right, Left, Up)), " +
+                                         "(Block(Pos(2,1),Pos(3,1)),List(Down, Left, Up)))")
+    }
+  }
 
   test("Check Pos and terrainFunction for -"){
     new Level1 {
