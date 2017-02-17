@@ -81,7 +81,7 @@ trait GameDef {
    * This function returns the block at the start position of
    * the game.
    */
-  def startBlock: Block = ???
+  def startBlock: Block = new Block(startPos, startPos)
 
 
   /**
@@ -143,11 +143,12 @@ trait GameDef {
     /**
      * Returns `true` if the block is standing.
      */
-    def isStanding: Boolean = ???
+    //When both poses are on the same game level then the block is standing.
+    def isStanding: Boolean = (b1 == b2)
 
     /**
      * Returns `true` if the block is entirely inside the terrain.
      */
-    def isLegal: Boolean = ???
+    def isLegal: Boolean = (terrain(b1) || terrain(b2))
   }
 }
