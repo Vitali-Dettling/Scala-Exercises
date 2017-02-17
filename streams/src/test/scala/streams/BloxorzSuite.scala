@@ -42,6 +42,19 @@ class BloxorzSuite extends FunSuite {
     val optsolution = List(Right, Right, Down, Right, Right, Right, Down)
   }
 
+  trait Level2 extends SolutionChecker {
+      /* terrain for level 1*/
+
+    val level =
+    """ooo-------
+      |oooooo----
+      |oooSooooo-
+      |-ooooooooo
+      |-----ooToo
+      |------ooo-""".stripMargin
+
+  }
+
   test("Check Pos and terrainFunction for -"){
     new Level1 {
       assert(false == terrain(Pos(0,3)))
@@ -51,6 +64,12 @@ class BloxorzSuite extends FunSuite {
   test("Check Pos and terrainFunction for o"){
     new Level1 {
       assert(true == terrain(Pos(5,7)))
+    }
+  }
+
+  test("Find different Start pos"){
+    new Level2 {
+      assert(startPos == Pos(2, 3))
     }
   }
 
