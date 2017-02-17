@@ -36,8 +36,8 @@
       <file leaf-file-name="Examples.sc" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/example/Examples.sc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state relative-caret-position="252">
+              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -77,6 +77,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>NoSuchElementException</find>
+      <find>lis</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -681,8 +682,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/example/Examples.sc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="252">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="36" />
           <folding />
         </state>
       </provider>
