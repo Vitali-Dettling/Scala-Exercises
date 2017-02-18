@@ -72,21 +72,17 @@ trait Solver extends GameDef {
    * of different paths - the implementation should naturally
    * construct the correctly sorted stream.
    */
+  //https://www.scala-lang.org/docu/files/collections-api/collections_0.html
   def from(initial: Stream[(Block, List[Move])], explored: Set[Block]): Stream[(Block, List[Move])] = {
 
-    val t = for((ib: Block, lms: List[Move]) <- initial;
-                (b, m) <- ib.legalNeighbors)
-      yield ((b, m :: lms))
+    if(!initial.isEmpty){
 
-    val tt = newNeighborsOnly(t, explored)
+      val allPos = for ((ib, lms) <- initial;
+                        (b, m) <- neighborsWithHistory(ib, lms))
+        yield ((b, m ++ lms))
 
-    tt
-
-//    val nodes = for(node <- neighbors; if(done(node._1))) yield node
-//
-//    nodes.distinct.toStream
-
-
+      initial ++ from(newNeighborsOnly(allPos, explored), explored ++ allPos.map(_._1).toSet)
+    }else Stream.empty// Break up criterion
   }
 
   /**
@@ -100,7 +96,9 @@ trait Solver extends GameDef {
    * Returns a stream of all possible pairs of the goal block along
    * with the history how it was reached.
    */
-  lazy val pathsToGoal: Stream[(Block, List[Move])] = ???
+  lazy val pathsToGoal: Stream[(Block, List[Move])] = {
+    from(Stream((endBlock, List.empty[Move])), Set(endBlock))
+  }
 
   /**
    * The (or one of the) shortest sequence(s) of moves to reach the
@@ -110,5 +108,7 @@ trait Solver extends GameDef {
    * the first move that the player should perform from the starting
    * position.
    */
-  lazy val solution: List[Move] = ???
+  lazy val solution: List[Move] = {
+
+  }
 }
