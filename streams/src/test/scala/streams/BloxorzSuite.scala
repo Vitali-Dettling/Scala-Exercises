@@ -60,20 +60,6 @@ class BloxorzSuite extends FunSuite {
       assert(t.length === 111)
     }
   }
-//
-//  test("pathsToGoal"){
-//    new Level1{
-//      val t = pathsToGoal
-//
-//      assert(t.length === 3)
-//      assert(t(0).toString() === "(Block(Pos(2,7),Pos(3,7)),List(Up))")
-//      assert(t(1).toString() === "(Block(Pos(4,8),Pos(4,9)),List(Right))")
-//      assert(t(2).toString() === "(Block(Pos(4,5),Pos(4,6)),List(Left))")
-//    }
-//  }
-
-
-
 
   test("newNeighborsOnly"){
     new Level1 {
@@ -155,7 +141,9 @@ class BloxorzSuite extends FunSuite {
 
 	test("optimal solution for level 1") {
     new Level1 {
-      assert(solve(solution) == Block(goal, goal))
+
+      val tt = solution
+      assert(solve(tt) == Block(goal, goal))
     }
   }
 

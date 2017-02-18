@@ -10,7 +10,7 @@ trait Solver extends GameDef {
   /**
    * Returns `true` if the block `b` is at the final position
    */
-  def done(b: Block): Boolean = b.b2 == goal && b.b1 == goal
+  def done(b: Block): Boolean = b.b2 == goal && b.b1 == goal && b.isStanding
 
   /**
    * This function takes two arguments: the current block `b` and
@@ -79,9 +79,9 @@ trait Solver extends GameDef {
 
       val allPos = for ((ib, lms) <- initial;
                         (b, m) <- neighborsWithHistory(ib, lms))
-        yield ((b, m ++ lms))
+        yield ((b, m))
 
-      initial ++ from(newNeighborsOnly(allPos, explored), explored ++ allPos.map(_._1).toSet)
+      initial ++ from(newNeighborsOnly(allPos, explored), explored ++ allPos.map(_._1))
     }else Stream.empty// Break up criterion
   }
 
@@ -96,9 +96,8 @@ trait Solver extends GameDef {
    * Returns a stream of all possible pairs of the goal block along
    * with the history how it was reached.
    */
-  lazy val pathsToGoal: Stream[(Block, List[Move])] = {
-    from(Stream((endBlock, List.empty[Move])), Set(endBlock))
-  }
+  lazy val pathsToGoal: Stream[(Block, List[Move])] = pathsFromStart.filter(p => done(p._1))
+
 
   /**
    * The (or one of the) shortest sequence(s) of moves to reach the
@@ -110,5 +109,12 @@ trait Solver extends GameDef {
    */
   lazy val solution: List[Move] = {
 
+    val pg = pathsToGoal
+    if(pg.isEmpty) List.empty[Move]
+    else {
+      val t = pg.map(_._2).reverse
+      val g = t.sortWith(_.length < _.length)
+      g.head//The shortest path
+    }
   }
 }
