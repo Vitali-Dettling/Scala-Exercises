@@ -68,7 +68,24 @@ class BloxorzSuite extends FunSuite {
         (Block(Pos(2,1),Pos(3,1)), List(Down,Left,Up))
       ).toStream
 
+      println(result.toString())
+      println(newNeighbors.toString())
+
       assert(newNeighbors.toString() == result.toString())
+    }
+  }
+
+  test("pathsFromStart"){
+    new Level1{
+      val t = pathsFromStart
+      println(t.toString())
+    }
+  }
+
+  test("legalNeighbors"){
+    new Level1{
+      val t = startBlock.legalNeighbors
+      assert(t.toString() == "List((Block(Pos(1,2),Pos(1,3)),Right), (Block(Pos(2,1),Pos(3,1)),Down))")
     }
   }
 

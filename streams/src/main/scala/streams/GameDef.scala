@@ -110,22 +110,22 @@ trait GameDef {
 
 
     /** The block obtained by moving left */
-    def left: Block = if (isStanding)             deltaCol(-2, -1)
+    def left: Block = if (isStanding)      deltaCol(-2, -1)
                else if (b1.row == b2.row)  deltaCol(-1, -2)
                else                        deltaCol(-1, -1)
 
     /** The block obtained by moving right */
-    def right: Block = if (isStanding)            deltaCol(1, 2)
+    def right: Block = if (isStanding)     deltaCol(1, 2)
                 else if (b1.row == b2.row) deltaCol(2, 1)
                 else                       deltaCol(1, 1)
 
     /** The block obtained by moving up */
-    def up: Block = if (isStanding)               deltaRow(-2, -1)
+    def up: Block = if (isStanding)        deltaRow(-2, -1)
              else if (b1.row == b2.row)    deltaRow(-1, -1)
              else                          deltaRow(-1, -2)
 
     /** The block obtained by moving down */
-    def down: Block = if (isStanding)             deltaRow(1, 2)
+    def down: Block = if (isStanding)      deltaRow(1, 2)
                else if (b1.row == b2.row)  deltaRow(1, 1)
                else                        deltaRow(2, 1)
 

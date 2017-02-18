@@ -44,14 +44,9 @@ trait Solver extends GameDef {
    * positions that have already been explored. We will use it to
    * make sure that we don't explore circular paths.
    */
-  def newNeighborsOnly(neighbors: Stream[(Block, List[Move])], explored: Set[Block]): Stream[(Block, List[Move])] = {
-    for( n <- neighbors;
-         ex <- explored;
-         if(n._1.b1.row != ex.b1.row &&
-            n._1.b1.col != ex.b1.col &&
-            n._1.b2.row != ex.b2.row &&
-            n._1.b2.col != ex.b2.col)
-    )yield n
+  def newNeighborsOnly(neighbors: Stream[(Block, List[Move])],
+                       explored: Set[Block]): Stream[(Block, List[Move])] = {
+    neighbors.filterNot(p => explored.contains(p._1))
   }
 
   /**
@@ -78,18 +73,28 @@ trait Solver extends GameDef {
    * construct the correctly sorted stream.
    */
   def from(initial: Stream[(Block, List[Move])], explored: Set[Block]): Stream[(Block, List[Move])] = {
-    //Only unvisited nodes
-    val neighbors = newNeighborsOnly(initial, explored)
-    //Keep nodes which have reached the goal
-    val nodes = for(node <- neighbors; done(node._1)) yield node
-    //Sort results by means of the move length
-    nodes.sortBy(_._2.length).distinct
+
+    val t = for((ib: Block, lms: List[Move]) <- initial;
+                (b, m) <- ib.legalNeighbors)
+      yield ((b, m :: lms))
+
+    val tt = newNeighborsOnly(t, explored)
+
+    tt
+
+//    val nodes = for(node <- neighbors; if(done(node._1))) yield node
+//
+//    nodes.distinct.toStream
+
+
   }
 
   /**
    * The stream of all paths that begin at the starting block.
    */
-  lazy val pathsFromStart: Stream[(Block, List[Move])] = ???
+  lazy val pathsFromStart: Stream[(Block, List[Move])] = {
+    from(Stream((startBlock, List.empty[Move])), Set(startBlock))
+  }
 
   /**
    * Returns a stream of all possible pairs of the goal block along
