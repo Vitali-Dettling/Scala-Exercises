@@ -1,4 +1,4 @@
-package example
+package examples
 
 import org.scalatest.FunSuite
 import org.junit.runner.RunWith
