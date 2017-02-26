@@ -9,15 +9,22 @@ import Prop._
 
 abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
 
-  lazy val genHeap: Gen[H] = ???
+  lazy val genHeap: Gen[H] = for {
+    a: A <- arbitrary[A]
+    h: H <- arbitrary[H]
+    m: H <- oneOf(const(insert(a, h)), genHeap)
+  } yield m
+
   implicit lazy val arbHeap: Arbitrary[H] = Arbitrary(genHeap)
 
-  //Generator for maps of type Map[Int,Int].
+
+  //Example: Generator for maps of type Map[Int,Int].
   lazy val genMap: Gen[Map[Int,Int]] = for {
     k <- arbitrary[Int]
     v <- arbitrary[Int]
     m <- oneOf(const(Map.empty[Int,Int]), genMap)
   } yield m.updated(k, v)
+
 
   property("gen1") = forAll { (h: H) =>
     val m = if (isEmpty(h)) 0 else findMin(h)
@@ -29,10 +36,11 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     *  then find the minimum of the resulting heap,
     *  you get the element back.
     */
-  property("min1") = forAll { a: Int =>
-    val h = insert(a, empty)
-    findMin(h) == a
-  }
+//  property("min1") = forAll { a: Int =>
+//    val h = insert(a, empty)
+//    findMin(h) == a
+//  }
+
 
   //TODO:
 

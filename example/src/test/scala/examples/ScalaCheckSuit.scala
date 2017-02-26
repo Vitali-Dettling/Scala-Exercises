@@ -2,21 +2,32 @@ package examples
 
 import org.scalatest.FunSuite
 import org.junit.runner.RunWith
+import org.scalacheck.Prop
+import org.scalatest.exceptions.TestFailedException
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.prop.Checkers
+
 
 /**
   * Created by vitali on 2/26/17.
   */
 // https://github.com/rickynils/scalacheck/blob/master/doc/UserGuide.md
 @RunWith(classOf[JUnitRunner])
-class ScalaCheckSuit extends FunSuite {
+class ScalaCheckSuit extends FunSuite with Checkers {
 
-  import ScalaCheck._
+  def checkBogus(p: Prop) {
+    var ok = false
+    try {
+      check(p)
+    } catch {
+      case e: TestFailedException =>
+        ok = true
+    }
+    assert(ok, "It is suppose to fail.")
+  }
 
-
-
-    test("1"){
-      print(propConcatLists.check.toString())
+    test("Properties check"){
+      check(new ScalaCheck with ScalaCheckPass)
     }
 
   /**
@@ -26,7 +37,7 @@ class ScalaCheckSuit extends FunSuite {
     * You'll read more about this later on.
     * */
     test("2"){
-      print(propSqrt.check.toString())
+      checkBogus(new ScalaCheck with ScalaCheckFails)
     }
 
 

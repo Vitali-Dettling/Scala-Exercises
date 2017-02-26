@@ -3,18 +3,18 @@ package quickcheck
 import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-
 import org.scalatest.prop.Checkers
 import org.scalacheck.Arbitrary._
-import org.scalacheck.Prop
+import org.scalacheck.Gen.{const, oneOf}
+import org.scalacheck.{Gen, Prop}
 import org.scalacheck.Prop._
-
 import org.scalatest.exceptions.TestFailedException
 
 object QuickCheckBinomialHeap extends QuickCheckHeap with BinomialHeap
 
 @RunWith(classOf[JUnitRunner])
 class QuickCheckSuite extends FunSuite with Checkers {
+
   def checkBogus(p: Prop) {
     var ok = false
     try {
@@ -25,6 +25,7 @@ class QuickCheckSuite extends FunSuite with Checkers {
     }
     assert(ok, "A bogus heap should NOT satisfy all properties. Try to find the bug!")
   }
+
 
   test("Binomial heap satisfies properties.") {
     check(new QuickCheckHeap with quickcheck.test.BinomialHeap)
