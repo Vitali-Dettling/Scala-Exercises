@@ -1,5 +1,8 @@
 package examples
 
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
+import org.scalacheck.Gen.{const, oneOf}
 import org.scalacheck.Prop._
 
 /**
