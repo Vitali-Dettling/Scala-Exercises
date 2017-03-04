@@ -10,9 +10,9 @@ object TweetLength {
   def colorForRemainingCharsCount(remainingCharsCount: Signal[Int]): Signal[String] = {
       Signal {
         remainingCharsCount() match {
-          case c if (c < 0) => "#FF0000" //Red
-          case c if (0 <= c && c < 15) => "#FFFF00" //Yellow
-          case c if (c >= 15) => "#00FF00"//Green
+          case c if (c >= 15) => "green"//Green
+          case c if (c < 0) => "red" //Red
+          case c if (0 <= c && c < 15) => "orange" //Yellow
       }
     }
   }

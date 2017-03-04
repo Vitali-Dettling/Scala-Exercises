@@ -11,6 +11,13 @@ object Polynomial {
   //(-b ± √Δ) / 2a
   def computeSolutions(a: Signal[Double], b: Signal[Double],
       c: Signal[Double], delta: Signal[Double]): Signal[Set[Double]] = {
-    Signal( Set( (-b() + sr(delta()))/2*a() ,  (-b() - sr(delta()))/2*a()   ) )
+    Signal {
+      if (delta() < 0) Set(0, 0)
+      else {
+        val plus = (-b() + sr(delta()) ) / 2 * a()
+        val minus = (-b() - sr(delta())) / 2 * a()
+        Set(  plus , minus )
+      }
+    }
   }
 }

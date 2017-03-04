@@ -13,6 +13,35 @@ import TweetLength.MaxTweetLength
 class CalculatorSuite extends FunSuite with ShouldMatchers {
 
   /******************
+    ** Polynomial **
+    ******************/
+
+  test("Math.sqrt(x)"){
+    assert(Polynomial.sr(25) === 5)
+  }
+
+  //Δ = b² - 4ac
+  test("computeDelta"){
+    val res = Polynomial.computeDelta(Signal(1), Signal(5), Signal(1))
+    assert(res() === 21)
+  }
+
+  //(-b ± √Δ) / 2a
+  test("computeSolutions"){
+    val res = Polynomial.computeSolutions(Signal(1), Signal(4), Signal(1), Signal(25))
+    assert(res()(0.5))
+    assert(res()(-4.5))
+  }
+
+  //(-b ± √Δ) / 2a
+  test("delta is negative"){
+    val res = Polynomial.computeSolutions(Signal(1), Signal(4), Signal(1), Signal(-25))
+    assert(res()(0))
+  }
+
+
+
+  /******************
    ** TWEET LENGTH **
    ******************/
 
