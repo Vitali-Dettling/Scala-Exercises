@@ -27,6 +27,14 @@ class ScalaCheckSuit extends FunSuite with Checkers {
     assert(ok, "It is suppose to fail.")
   }
 
+  test("Square root"){
+    assert(Math.sqrt(4) === 2)
+  }
+
+  test("Square"){
+    assert(Math.pow(4, 2) === 4*4)
+  }
+
     test("Properties check"){
       check(new ScalaCheck with ScalaCheckPass)
     }
