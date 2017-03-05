@@ -22,7 +22,6 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     val res = Calculator.computeValues(expr)
     val ttt = res.map(p => p._2())
     assert(ttt.exists(p => p == 4.0))
-
   }
 
   test("computeValues with ref"){
@@ -31,7 +30,14 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     val res = Calculator.computeValues(expr)
     val ttt = res.map(p => p._2())
     assert(ttt.exists(p => p === 6.0))
+  }
 
+  test("Ref cycle"){
+
+    val expr: Map[String, Signal[Expr]] = Map(("a" -> Signal(Plus(Ref("b"), Literal(3)))), ("b" -> Signal(Plus(Ref("a"), Literal(2)))))
+    val res = Calculator.computeValues(expr)
+    val ttt = res.map(p => p._2())
+    assert(ttt.exists(p => p.isNaN))
   }
 
   /******************

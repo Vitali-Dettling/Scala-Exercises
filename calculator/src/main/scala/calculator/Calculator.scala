@@ -21,11 +21,19 @@ object Calculator {
       case m: Minus => (eval(m.a, references) - eval(m.b, references))
       case t: Times => (eval(t.a, references) * eval(t.b, references))
       case d: Divide => (eval(d.a, references) / eval(d.b, references))
-      case r: Ref => eval(getReferenceExpr(r.name, references), references)
+      case r: Ref =>  if(checkCycle(r.name, references)) Double.NaN
+                      else eval(getReferenceExpr(r.name, references), references)
       case l: Literal => l.v
       case _ => Double.NaN//Error handling!
     }
   }
+
+  var pre: Map[String, Expr] = Map()//Global Variable
+  def checkCycle(refName: String, references: Map[String, Signal[Expr]]): Boolean = {
+    if(pre.exists(p => p._1 == refName)){ pre = Map(); true }
+    else{ pre += (refName -> getReferenceExpr(refName, references)) ; false }
+  }
+
 
   /** Get the Expr for a referenced variables.
    *  If the variable is not known, returns a literal NaN.
