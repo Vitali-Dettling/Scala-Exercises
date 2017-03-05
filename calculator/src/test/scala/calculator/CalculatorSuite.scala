@@ -12,6 +12,28 @@ import TweetLength.MaxTweetLength
 @RunWith(classOf[JUnitRunner])
 class CalculatorSuite extends FunSuite with ShouldMatchers {
 
+
+  /******************
+    ** Calculator **
+    ******************/
+  test("computeValues"){
+
+    val expr: Map[String, Signal[Expr]] = Map("a" -> Signal(Plus(Literal(2), Literal(2))))
+    val res = Calculator.computeValues(expr)
+    val ttt = res.map(p => p._2())
+    assert(ttt.exists(p => p == 4.0))
+
+  }
+
+  test("computeValues with ref"){
+
+    val expr: Map[String, Signal[Expr]] = Map(("a" -> Signal(Plus(Literal(2), Literal(2)))), ("b" -> Signal(Plus(Ref("a"), Literal(2)))))
+    val res = Calculator.computeValues(expr)
+    val ttt = res.map(p => p._2())
+    assert(ttt.exists(p => p === 6.0))
+
+  }
+
   /******************
     ** Polynomial **
     ******************/
